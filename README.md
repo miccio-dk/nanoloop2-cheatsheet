@@ -9,8 +9,9 @@ Each mode/view has its own colour (ColorBrewer Set1), used consistently
 in the page-1 workflow chart and in every box's frame and title bar;
 the workflow box itself, channels and sync are grey.
 Key mappings are set as dot leaders: keys flush left, action flush
-right — dense lists (menu 1, pitch/chord, song editor) in two columns
-with a thin rule between them.
+right — dense lists (menu 1, pitch/chord, song editor, file menu) in
+two columns with a thin rule between them. Channel names are set as
+lowercase bold monospace (r l s n), like the device displays them.
 
 ![Page 1: sequencer, menu 1, channels, and the five step parameters](preview-page-1.png)
 ![Page 2: menu 2, song editor, sync, file and bank menus](preview-page-2.png)

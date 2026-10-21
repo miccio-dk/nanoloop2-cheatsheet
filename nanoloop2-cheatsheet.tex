@@ -41,13 +41,15 @@
 \newcommand{\Lf}{\ensuremath{\blacktriangleleft}}
 \newcommand{\Rt}{\ensuremath{\blacktriangleright}}
 \newcommand{\UD}{\U\kern-1.6pt\D}
-\newcommand{\LR}{\Lf\kern-1.6pt\Rt}
-\newcommand{\DP}{\UD\kern-1.2pt\LR}
+\newcommand{\LR}{\Lf\kern-0.5pt\Rt}
+\newcommand{\DP}{\UD\kern-1.0pt\LR}
 \newcommand{\btn}[1]{{\setlength{\fboxsep}{1.1pt}%
   \fbox{\sffamily\bfseries\fontsize{8.5}{9.5}\selectfont #1}}}
 \newcommand{\plus}{\,{+}\,}
 \newcommand{\hd}[1]{{\sffamily\bfseries #1}} % subheading inside a box
 \newcommand{\chn}[1]{{\ttfamily\bfseries #1}} % channel letter (device style)
+\newcommand{\cbox}[1]{{\setlength{\fboxsep}{1.2pt}%
+  \fbox{\ttfamily\bfseries\fontsize{9.5}{10}\selectfont #1}}} % boxed channel letter
 % key mapping line: keys flush left, dots, action flush right
 \newcommand{\km}[2]{\noindent\hbox to \linewidth{#1\ \dotfill\ #2}\par}
 % two-column split for mapping lists, thin grey rule between the columns
@@ -76,7 +78,7 @@
   csong/.style={colframe=s1orange, colbacktitle=s1orange},
   cgrey/.style={colframe=s1grey,   colbacktitle=s1grey},
 }
-\newcommand{\note}[1]{\par\vspace{2pt}{\color{nlgrey}\itshape\footnotesize #1}}
+\newcommand{\note}[1]{\par\vspace{5pt}{\color{nlgrey}\itshape\footnotesize #1}}
 
 % --- workflow diagram styles ---------------------------------------------------
 \tikzset{
@@ -131,32 +133,32 @@
      \node[state, draw=s1orange] (song) at (24,-2.3){\textcolor{s1orange}{SONG EDITOR}\\[-0.5mm]
        {\footnotesize\mdseries arrange patterns to a song}\\[1.2mm]
        \includegraphics[width=26mm]{icons/songs.png}};
-     % sequencer <-> menu 1
-     \draw[sarr] (seq.east) to[bend left=12] (m1.west);
-     \node[elab] at (6,3.4) {SELECT};
-     \draw[sarr] (m1.west) to[bend left=12] (seq.east);
-     \node[elab] at (6,1.2) {B};
+     % sequencer <-> menu 1 (offset pair, labels on the lines)
+     \draw[sarr] ([yshift=2.8mm]seq.east) to[bend left=8] ([yshift=2.8mm]m1.west);
+     \node[elab] at (6,2.98) {SELECT};
+     \draw[sarr] ([yshift=-2.8mm]m1.west) to[bend left=8] ([yshift=-2.8mm]seq.east);
+     \node[elab] at (6,1.62) {B};
      % menu 1 <-> menu 2
-     \draw[sarr] (m1.east) to[bend left=12] (m2.west);
-     \node[elab] at (18,3.4) {SELECT};
-     \draw[sarr] (m2.west) to[bend left=12] (m1.east);
-     \node[elab] at (18,1.2) {SELECT};
+     \draw[sarr] ([yshift=2.8mm]m1.east) to[bend left=8] ([yshift=2.8mm]m2.west);
+     \node[elab] at (18,2.98) {SELECT};
+     \draw[sarr] ([yshift=-2.8mm]m2.west) to[bend left=8] ([yshift=-2.8mm]m1.east);
+     \node[elab] at (18,1.62) {SELECT};
      % menu 2 -> file menu (diagonal), file menu -> menu 1 (vertical)
      \draw[sarr] (m2.south west) to[bend left=10] (file.north east);
-     \node[elab] at (19.4,0.9)
+     \node[elab] at (18.3,-0.1)
        {\btn{B}\ \includegraphics[height=2.8mm]{icons/file.png}};
-     \draw[sarr] (file.north) to[bend left=10] (m1.south);
-     \node[elab] at (10.7,0) {SELECT};
+     \draw[sarr] ([xshift=-2.8mm]file.north) to[bend left=8] ([xshift=-2.8mm]m1.south);
+     \node[elab] at (11.35,0) {SELECT};
      % file menu <-> bank menu
-     \draw[sarr] (file.west) to[bend left=12] (bank.east);
-     \node[elab] at (6,-1.1) {START};
-     \draw[sarr] (bank.east) to[bend left=12] (file.west);
-     % menu 2 <-> song editor
-     \draw[sarr] (m2.south) to[bend left=12] (song.north);
-     \node[elab] at (26.1,0)
+     \draw[sarr] ([yshift=2.8mm]file.west) to[bend right=8] ([yshift=2.8mm]bank.east);
+     \node[elab] at (6,-1.64) {START};
+     \draw[sarr] ([yshift=-2.8mm]bank.east) to[bend right=8] ([yshift=-2.8mm]file.west);
+     % menu 2 <-> song editor (offset vertical pair)
+     \draw[sarr] ([xshift=2.8mm]m2.south) to[bend left=8] ([xshift=2.8mm]song.north);
+     \node[elab] at (24.62,0)
        {\btn{B} or \btn{A}\ \includegraphics[height=2.8mm]{icons/song.png}};
-     \draw[sarr] (song.north) to[bend left=12] (m2.south);
-     \node[elab] at (21.9,0) {SELECT};
+     \draw[sarr] ([xshift=-2.8mm]song.north) to[bend left=8] ([xshift=-2.8mm]m2.south);
+     \node[elab] at (23.38,0) {SELECT};
    \end{tikzpicture}}\par}
 
 % ---- sequencer -------------------------------------------------------------------
@@ -177,15 +179,13 @@
 
 % ---- channels ----------------------------------------------------------------------
 \posterbox[title=CHANNELS, cgrey]{name=ch, column=6, span=3, row=5, rowspan=3}
-  {\chn{r} mono PWM/FM, arp chords, pitch env/LFO\\
-   \chn{l} mono PWM/FM, same as R\\
-   \chn{s} poly PWM/FM: real chords, stereo phasing, filter/mod env\\
-   \chn{n} noise: filter + speed, arp on speed
-   \note{R/L/S: filtered pulse wave (variable width) or FM
-         (mod amount + mod freq).}
-   \note{\hd{Startup:} at the logo, pick colours --
-         \btn{START} pink/white, \btn{SELECT} pink/black,
-         \U\ grey/white.}}
+  {\km{\cbox{r}}{mono, arp, pitch env/LFO}
+   \km{\cbox{l}}{mono, same as \chn{r}}
+   \km{\cbox{s}}{poly, real chords, stereo}
+   \km{\cbox{n}}{noise, filter/speed, arp}
+   \note{\chn{r}/\chn{l}/\chn{s}: filtered pulse wave (variable
+         width) or FM (mod amount + freq). \chn{s} adds stereo
+         phasing + filter/mod env; \chn{n} arp is on speed.}}
 
 % ---- sync ----------------------------------------------------------------------------
 \posterbox[title=SYNC, cgrey]{name=sync, column=9, span=4, row=5, rowspan=3}
@@ -215,7 +215,6 @@
 % =========================== LEFT: menu 1 + params ============================
 \posterbox[title=MENU 1 -- channel \& parameter, cm1]{name=m1, column=1, span=6, row=1, rowspan=3}
   {\strip{menu1}{38mm}
-   \km{\btn{B}/\btn{A}/\btn{START}\plus\DP}{edit \emph{all} notes at once}
    \noindent\begin{minipage}[t]{0.47\linewidth}
      \km{\LR}{select parameter}
      \km{\UD}{select channel}
@@ -241,7 +240,8 @@
      \km{\btn{A}\plus\LR}{select chord step}
      \km{\btn{L}}{arpeggio env. on/off}
    \end{minipage}
-   \note{Chords: arpeggio on R/L, polyphonic on S. N has no pitch --
+   \note{Chords: arpeggio on \chn{r}/\chn{l}, polyphonic on \chn{s}.
+         \chn{n} has no pitch --
          always arpeggio (on playback frequency).
          Chord step: top note = pause.}}
 
@@ -249,7 +249,7 @@
   {\km{\btn{B}\plus\UD}{volume}
    \km{\btn{B}\plus\LR}{length}
    \km{\btn{A}\plus\UD}{envelope: D / AD / gate}
-   \km{\btn{A}\plus\LR}{click (R) / soft (L,S,N)}
+   \km{\btn{A}\plus\LR}{click (\chn{r}) / soft (\chn{l},\chn{s},\chn{n})}
    \note{D = decay only. AD = attack = decay. Gate = full level for
          the set length. Far right = infinite envelope.}}
 
@@ -257,22 +257,23 @@
   {\km{\btn{B}\plus\UD}{amplitude}
    \km{\btn{B}\plus\LR}{length / frequency}
    \km{\btn{A}\plus\UD}{envelope / LFO}
-   \km{\btn{A}\plus\LR}{S only: pitch / filter}
-   \note{Acts on pitch (R,L,S) and filter cutoff / FM mod depth (S,N).
+   \km{\btn{A}\plus\LR}{\chn{s} only: pitch / filter}
+   \note{Acts on pitch (\chn{r},\chn{l},\chn{s}) and filter cutoff /
+         FM mod depth (\chn{s},\chn{n}).
          Lower half = retriggered, upper = free-running.}}
 
 \posterbox[title={\ticon{pw}WAVEFORM}, cm1]{name=p4, column=1, span=3, row=10, rowspan=3}
   {\km{\btn{B}\plus\UD}{cutoff / FM modulation}
    \km{\btn{B}\plus\LR}{pulse width / mod freq}
-   \km{\btn{A}\plus\U}{FM (R,L,S) / GB noise (N)}
-   \km{\btn{A}\plus\D}{PWM / highpass noise (N)}
+   \km{\btn{A}\plus\U}{FM (\chn{r},\chn{l},\chn{s}) / GB noise (\chn{n})}
+   \km{\btn{A}\plus\D}{PWM / highpass noise (\chn{n})}
    \km{\btn{A}\plus\Rt}{bandpass / metallic noise}
    \km{\btn{A}\plus\Lf}{highpass / white noise}
-   \note{On N: \btn{B}\plus\LR\ = noise speed;
+   \note{On \chn{n}: \btn{B}\plus\LR\ = noise speed;
          \btn{L} toggles GB noise 16/8-bit.}}
 
 \posterbox[title={\ticon{pan}PAN / DELAY}, cm1]{name=p5, column=4, span=3, row=10, rowspan=3}
-  {\km{\btn{B}\plus\LR}{panning (S and N only)}
+  {\km{\btn{B}\plus\LR}{panning (\chn{s} and \chn{n} only)}
    \km{\btn{B}\plus\UD}{delay / delay + orig.}
    \note{Editing delay for all notes from menu 1 hits only
          even steps -- that is the swing control.}}
@@ -292,18 +293,19 @@
    \LR\ select slot \textperiodcentered{}
    \btn{START}\ bank menu \textperiodcentered{}
    \btn{SELECT}\ back to menu 1\\[2pt]
-   \begin{tabular}{@{}ll@{\hspace{4mm}}ll@{}}
-     \btn{B}\plus\D & save pattern to slot &
-     \btn{B}\plus\U & load pattern from slot\\
-     \btn{A}\plus\D & save all 4 (column) &
-     \btn{A}\plus\U & load column\\
-     \btn{B}\plus\LR & next slot + load &
-     \btn{A}\plus\LR & next column + load all\\
-     \btn{B}\plus\btn{R}\plus\U & load pattern with tempo &
-     \btn{A}\plus\btn{B}\plus\U & load column on 1st step\\
-     \btn{A}\plus\btn{B}\plus\D & delete slot &
-     \btn{A}\plus\btn{B}\plus\LR & mute / unmute / solo\\
-   \end{tabular}\\[2pt]
+   \noindent\begin{minipage}[t]{0.52\linewidth}
+     \km{\btn{B}\plus\D}{save pattern to slot}
+     \km{\btn{B}\plus\btn{R}\plus\U}{load pattern + tempo}
+     \km{\btn{A}\plus\LR}{next column + load all}
+     \km{\btn{A}\plus\btn{B}\plus\U}{load column @ step 1}
+     \km{\btn{A}\plus\btn{B}\plus\LR}{mute/unmute/solo}
+   \end{minipage}\colsplit\begin{minipage}[t]{0.42\linewidth}
+     \km{\btn{A}\plus\D}{save all 4 (column)}
+     \km{\btn{B}\plus\U}{load pattern}
+     \km{\btn{A}\plus\U}{load column}
+     \km{\btn{B}\plus\LR}{next slot + load}
+     \km{\btn{A}\plus\btn{B}\plus\D}{delete slot}
+   \end{minipage}\\[2pt]
    \hd{Lock:} \btn{L}\plus\btn{R} locks saving (``X'' shown),
         against accidental overwriting.\\
    \hd{Bank menu:} \btn{A}\plus\btn{B}\plus\U\ copy bank
@@ -314,7 +316,7 @@
         \textperiodcentered{} on error: \btn{SELECT} cancels,
         \btn{A}\plus\btn{B} keeps the data.}
 
-\posterbox[title={\ticon{song}SONG EDITOR}, csong]{name=song, column=7, span=6, row=8, rowspan=3}
+\posterbox[title={\ticon{song}SONG EDITOR}, csong, top=0.7mm, bottom=1.1mm]{name=song, column=7, span=6, row=8, rowspan=2}
   {\noindent\begin{minipage}[t]{0.47\linewidth}
      \km{\btn{B}\plus\UD}{select pattern}
      \km{\btn{B}\plus\LR}{copy value to next}
@@ -326,19 +328,19 @@
      \km{\btn{START}}{start song at cursor}
      \km{\btn{SELECT}}{back to menu 2}
    \end{minipage}
-   \note{Song is saved when you \emph{leave} the editor -- not if you
-         power off inside it. Tempo is stored with each pattern.}}
+   \note{Saved on leaving the editor, not on power-off.
+         Tempo is stored per pattern.}}
 
 \posterbox[title={\ticon{pingpong}PING-PONG}, cm2,
-  fontupper=\sffamily\fontsize{8pt}{9.5pt}\selectfont, top=1.1mm, bottom=1.1mm]
-  {name=pp, column=7, span=2, row=11, rowspan=2}
+]
+  {name=pp, column=7, span=2, row=10, rowspan=3}
   {\km{\btn{B}\plus\Lf}{on}
    \km{\btn{START}}{random}
    \km{\btn{B}\plus\Rt}{normal (off)}}
 
 \posterbox[title={\ticon{shift}SHIFT}, cm2,
-  fontupper=\sffamily\fontsize{8pt}{9.5pt}\selectfont, top=1.1mm, bottom=1.1mm]
-  {name=sh, column=9, span=2, row=11, rowspan=2}
+]
+  {name=sh, column=9, span=2, row=10, rowspan=3}
   {\km{\btn{B}\plus\UD}{length}
    \km{\btn{B}\plus\LR}{shift}
    \km{\btn{A}\plus\LR}{shift+delay}
@@ -346,8 +348,8 @@
    \km{\btn{A}\plus\btn{B}}{paste}}
 
 \posterbox[title={\ticon{tempo}TEMPO}, cm2,
-  fontupper=\sffamily\fontsize{8pt}{9.5pt}\selectfont, top=1.1mm, bottom=1.1mm]
-  {name=tp, column=11, span=2, row=11, rowspan=2}
+]
+  {name=tp, column=11, span=2, row=10, rowspan=3}
   {\km{\btn{B}\plus\LR}{tempo}
    \km{\btn{B}\plus\UD}{1/x tempo}
    \km{\btn{START}}{start / master}
