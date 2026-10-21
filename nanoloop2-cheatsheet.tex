@@ -1,0 +1,262 @@
+% nanoloop 2 cheatsheet -- unofficial, condensed from the official
+% nanoloop 2.8 manual (https://nanoloop.com/two/nanoloop28.html).
+% Two A4 landscape pages, built with tcolorbox's tcbposter library.
+% Build:  make        (or: latexmk -pdf nanoloop2-cheatsheet.tex)
+\documentclass[11pt,a4paper,landscape]{article}
+\usepackage[margin=6mm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{amssymb}
+\usepackage[most]{tcolorbox}
+\tcbuselibrary{poster,skins}
+\pagestyle{empty}
+\renewcommand{\baselinestretch}{1.3}
+
+% --- colours: nanoloop pink on charcoal -----------------------------------
+\definecolor{nlpink}{HTML}{EC407A}
+\definecolor{nlpinklt}{HTML}{FCE4EC}
+\definecolor{nldark}{HTML}{263238}
+\definecolor{nlgrey}{HTML}{546E7A}
+
+% --- notation --------------------------------------------------------------
+% D-pad triangles: \U \D \Lf \Rt ; buttons: \btn{A} ; combos: A + UP etc.
+\newcommand{\U}{\ensuremath{\blacktriangle}}
+\newcommand{\D}{\ensuremath{\blacktriangledown}}
+\newcommand{\Lf}{\ensuremath{\blacktriangleleft}}
+\newcommand{\Rt}{\ensuremath{\blacktriangleright}}
+\newcommand{\UD}{\U\kern-0.5pt\D}
+\newcommand{\LR}{\Lf\kern-0.5pt\Rt}
+\newcommand{\DP}{\U\D\Lf\Rt}
+\newcommand{\btn}[1]{{\setlength{\fboxsep}{1.1pt}%
+  \fbox{\sffamily\bfseries\fontsize{8.5}{9.5}\selectfont #1}}}
+\newcommand{\plus}{\,{+}\,}
+\newcommand{\hd}[1]{{\sffamily\bfseries #1}} % subheading inside a box
+
+% --- poster box styles ------------------------------------------------------
+\tcbset{
+  nlbox/.style={
+    enhanced, breakable=false, sharp corners=downhill, arc=1.2mm,
+    colback=white, colframe=nldark, coltitle=white,
+    fonttitle=\sffamily\bfseries\small,
+    colbacktitle=nldark, boxed title style={sharp corners, boxrule=0pt},
+    title style={fill=nlpink},
+    boxrule=0.7pt, left=1.8mm, right=1.8mm, top=1.4mm, bottom=1.4mm,
+    fontupper=\sffamily\small, before upper={\raggedright},
+  },
+}
+\newcommand{\note}[1]{\par\vspace{2pt}{\color{nlgrey}\itshape #1}}
+
+\begin{document}
+
+% ============================ PAGE 1 ======================================
+\begin{tcbposter}[
+  poster = {columns=12, rows=7, spacing=1.6mm, width=\textwidth, height=\textheight},
+  boxes  = {nlbox},
+]
+% ---- header ---------------------------------------------------------------
+\posterbox[colback=nldark, colframe=nldark,
+  fontupper={\color{white}\sffamily\small}]
+  {name=hdr, column=1, span=12, row=1, rowspan=1}
+  {{\bfseries\LARGE nanoloop 2 \textperiodcentered{} cheatsheet}\hfill
+   {\footnotesize unofficial summary of the official 2.8 manual \textperiodcentered{}
+    GBA cart \& Analogue Pocket built-in version}\\[2pt]
+   Notation: \btn{B}\plus\U\ = hold \btn{B}, tap D-pad up.
+    All sound parameters are set \emph{per step} -- there are no instruments.
+    Channel is shown top-left, edit parameter top-right.}
+
+% ---- sequencer -------------------------------------------------------------
+\posterbox[title=THE SEQUENCER]{name=seq, column=1, span=5, row=2, rowspan=3}
+  {\hd{16 steps} in a 4{\texttimes}4 grid; the playing step is darker.\\[2pt]
+   \DP\ move cursor\\
+   \btn{B}\ place note\\
+   \btn{A}\ cut note / paste on empty step\\
+   \btn{B}\plus\DP\ edit note (current parameter)\\
+   \btn{A}\plus\DP\ edit extra parameters\\
+   \btn{START}\ mono / chord mode (pitch param)\\
+   \btn{R}\plus\Lf/\Rt\ meta step\\
+   \btn{SELECT}\ menu 1
+   \note{Default parameter is pitch: \btn{B}\plus\U\D\ semitone,
+         \btn{B}\plus\Lf\Rt\ octave.}
+   \note{\hd{Meta step:} \btn{R}\plus\Lf/\Rt/\D\ makes a step play only
+         every 2nd or 4th pattern round.}}
+
+% ---- menu 1 ----------------------------------------------------------------
+\posterbox[title=MENU 1 -- channel \& parameter]{name=m1, column=6, span=4, row=2, rowspan=3}
+  {\Lf\Rt\ select edit parameter\\
+   \U\D\ select channel\\
+   \btn{B}\ back to sequencer\\
+   \btn{B}/\btn{A}\plus\DP , \btn{START}\ edit \emph{all} notes at once\\
+   \btn{A}\plus\btn{START}\ mute / unmute channel\\
+   \btn{R}\plus\btn{START}\ note value / bar view\\
+   \btn{R}\plus\btn{SELECT}\ new / legacy mode (n\,/\,L, saved)\\
+   \btn{R}\plus\DP\ randomise (repeat = wider range)\\
+   \btn{SELECT}\ menu 2
+   \note{Legacy mode = pre-2.8 menu editing (\btn{A}\plus D-pad only).}}
+
+% ---- channels + startup ------------------------------------------------------
+\posterbox[title=CHANNELS]{name=ch, column=10, span=3, row=2, rowspan=3}
+  {\btn{R} mono PWM/FM, arp chords, pitch env/LFO\\
+   \btn{L} mono PWM/FM, same as R\\
+   \btn{S} poly PWM/FM: real chords, stereo phasing, filter/mod env\\
+   \btn{N} noise: filter + speed, arp on speed
+   \note{R/L/S: filtered pulse wave (variable width) or FM
+         (mod amount + mod freq).}
+   \note{\hd{Startup:} at the logo, pick colours --
+         \btn{START} pink/white, \btn{SELECT} pink/black,
+         \U\ grey/white.}}
+
+% ---- edit parameters ---------------------------------------------------------
+\posterbox[title=PARAM 1 -- VOLUME / ENVELOPE]{name=p1, column=1, span=2, row=5, rowspan=3}
+  {\btn{B}\plus\U\D\ volume\\
+   \btn{B}\plus\Lf\Rt\ length\\
+   \btn{A}\plus\U\D\ envelope mode: D / AD / gate\\
+   \btn{A}\plus\Lf\Rt\ click (R) / soft attack (L,S,N)
+   \note{D = decay only. AD = attack = decay.
+         Gate = full level for the set length.
+         Far right = infinite envelope.}}
+
+\posterbox[title=PARAM 2 -- PITCH / CHORD]{name=p2, column=3, span=3, row=5, rowspan=3}
+  {\btn{B}\plus\U\D\ semitone\\
+   \btn{B}\plus\Lf\Rt\ octave\\
+   \btn{START}\ chord mode on/off\\
+   \btn{B}\plus\btn{START}\ chord: relative (note + intervals)
+        / absolute (4 notes)\\
+   \btn{A}\plus\U\D\ chord interval\\
+   \btn{A}\plus\Lf\Rt\ select chord step (top note = pause)\\
+   \btn{L}\ arpeggio envelope on/off
+   \note{Chords: arpeggio on R/L, polyphonic on S.
+         N has no pitch -- always arpeggio (on playback freq).}}
+
+\posterbox[title=PARAM 3 -- BEND / LFO]{name=p3, column=6, span=2, row=5, rowspan=3}
+  {\btn{B}\plus\U\D\ amplitude\\
+   \btn{B}\plus\Lf\Rt\ length / frequency\\
+   \btn{A}\plus\U\D\ envelope / LFO\\
+   \btn{A}\plus\Lf\Rt\ S only: pitch / filter LFO
+   \note{Acts on pitch (R,L,S) and filter cutoff / FM mod depth (S,N).
+         Lower half = retriggered, upper = free-running.}}
+
+\posterbox[title=PARAM 4 -- WAVEFORM]{name=p4, column=8, span=3, row=5, rowspan=3}
+  {\btn{B}\plus\U\D\ cutoff / FM modulation\\
+   \btn{B}\plus\Lf\Rt\ pulse width / mod freq / noise speed\\
+   \btn{A}\plus\U\ FM (R,L,S) / GB noise (N)\\
+   \btn{A}\plus\D\ PWM / highpass noise (N)\\
+   \btn{A}\plus\Rt\ bandpass / metallic noise\\
+   \btn{A}\plus\Lf\ highpass / white noise
+   \note{On N: \btn{L} toggles GB noise 16/8-bit.}}
+
+\posterbox[title=PARAM 5 -- PAN / DELAY]{name=p5, column=11, span=2, row=5, rowspan=3}
+  {\btn{B}\plus\Lf\Rt\ panning (S and N only)\\
+   \btn{B}\plus\U\D\ delay / delay + original
+   \note{Editing delay for all notes from menu 1 hits only
+         even steps -- that is the swing control.}}
+\end{tcbposter}
+
+\clearpage
+
+% ============================ PAGE 2 ======================================
+\begin{tcbposter}[
+  poster = {columns=12, rows=7, spacing=1.6mm, width=\textwidth, height=\textheight},
+  boxes  = {nlbox},
+]
+% ---- header ---------------------------------------------------------------
+\posterbox[colback=nldark, colframe=nldark,
+  fontupper={\color{white}\sffamily\small}]
+  {name=hdr2, column=1, span=12, row=1, rowspan=1}
+  {{\bfseries\LARGE nanoloop 2 \textperiodcentered{} cheatsheet}
+   {\footnotesize\hfill patterns, files, songs \& sync}\\[2pt]
+   Menu 2 (\btn{SELECT} in menu 1) links to file menu, song editor,
+   pattern tools and tempo/sync. \btn{SELECT} steps back one menu level.\\
+   {\footnotesize\color{nlpinklt} Unofficial cheatsheet, condensed from the official
+   nanoloop 2.8 manual (nanoloop.com/two/nanoloop28.html). nanoloop is by
+   Oliver Wittchow -- this sheet is a summary, not affiliated.}}
+
+% ---- menu 2 -----------------------------------------------------------------
+\posterbox[title=MENU 2 -- pattern tools \& tempo]{name=m2, column=1, span=5, row=2, rowspan=3}
+  {\hd{File menu:} \btn{B}\qquad
+   \hd{Song editor:} \btn{B} or \btn{A} (see song box)\\
+   \hd{Ping-pong:} \btn{B}\plus\Lf\ on \textperiodcentered{}
+        \btn{START} random \textperiodcentered{} \btn{B}\plus\Rt\ normal\\
+   \hd{Pattern length:} \btn{B}\plus\U\D\ length\\
+   \hd{Shift:} \btn{B}\plus\Lf\Rt\ shift \textperiodcentered{}
+        \btn{A}\plus\Lf\Rt\ shift, keep delay\\
+   \hd{Copy/paste:} \btn{START} copy pattern \textperiodcentered{}
+        \btn{A}\plus\btn{B} paste\\
+   \hd{Tempo:} \btn{B}\plus\Lf\Rt\ tempo \textperiodcentered{}
+        \btn{B}\plus\U\D\ 1/x tempo for this channel\\
+   \hd{Transport:} \btn{START} start/master \textperiodcentered{}
+        \btn{A}\plus\btn{B} stop/slave \textperiodcentered{}
+        \btn{A} pause (again: step manually) \textperiodcentered{}
+        \btn{B} resume\\
+   \hd{Sync mode:} \btn{A}\plus\U\D\ (see sync box)}
+
+% ---- song editor --------------------------------------------------------------
+\posterbox[title=SONG EDITOR]{name=song, column=6, span=4, row=2, rowspan=3}
+  {\btn{B}\plus\U\D\ select pattern\\
+   \btn{B}\plus\Lf\Rt\ copy value to next step\\
+   \btn{A}\plus\U\ load patterns at cursor\\
+   \btn{A}\plus\Lf\Rt\ turn page (15 pages)\\
+   \btn{R}\ channel follows tempo\\
+   \btn{L}\ channel follows pattern length\\
+   \btn{START}\ start song at cursor\\
+   \btn{SELECT}\ back to menu 2
+   \note{Start modes (from menu 2): \btn{B} = pattern-sync, song follows
+         the running loop. \btn{A} = manual/external sync:
+         \btn{START} starts at once and sends sync,
+         \btn{B}\plus\btn{A} = slave.}
+   \note{Song is saved when you \emph{leave} the editor -- not if you
+         power off inside it. Tempo is stored with each pattern.}}
+
+% ---- sync ---------------------------------------------------------------------
+\posterbox[title=SYNC]{name=sync, column=10, span=3, row=2, rowspan=3}
+  {\hd{S8} click every 2nd step (default; PO, Volca\ldots)\\
+   \hd{S16} 1 click per step\\
+   \hd{S24} 3 clicks/step -- for MIDI adaptor\\
+   \hd{SY1} clicks on left audio ch. (PO slave; not on GBA)
+   \note{MIDI clock goes out via the link port
+         (Pocket-to-MIDI cable).}
+   \note{\hd{CV sync:} in slave mode press \btn{B}\plus\btn{SELECT} --
+         ``c'' under the tempo; 1 pulse per step.}
+   \note{\hd{S16 auto-revert:} no clock for \textasciitilde2 s
+         $\rightarrow$ back to step 1.}}
+
+% ---- file menu ------------------------------------------------------------------
+\posterbox[title=FILE MENU -- save / load patterns]{name=file, column=1, span=7, row=5, rowspan=3}
+  {128 banks \texttimes\ 15 slots per channel. Slot 0 is read-only
+   (loads an empty pattern). The bank also carries the waveforms --
+   switching banks can change the sound at once.\\[2pt]
+   \U\D\ select channel \textperiodcentered{}
+   \Lf\Rt\ select slot \textperiodcentered{}
+   \btn{START}\ bank menu \textperiodcentered{}
+   \btn{SELECT}\ back to menu 1\\[2pt]
+   \begin{tabular}{@{}ll@{\hspace{6mm}}ll@{}}
+     \btn{B}\plus\D & save pattern to slot &
+     \btn{B}\plus\U & load pattern from slot\\
+     \btn{A}\plus\D & save all 4 (column) &
+     \btn{A}\plus\U & load column\\
+     \btn{B}\plus\Lf\Rt & next slot + load &
+     \btn{A}\plus\Lf\Rt & next column + load all\\
+     \btn{B}\plus\btn{R}\plus\U & load pattern with tempo &
+     \btn{A}\plus\btn{B}\plus\U & load column on 1st step\\
+     \btn{A}\plus\btn{B}\plus\D & delete slot &
+     \btn{A}\plus\btn{B}\plus\Lf\Rt & mute / unmute / solo\\
+   \end{tabular}
+   \note{\hd{Lock:} \btn{L}\plus\btn{R} locks saving (``X'' bottom-left)
+         against accidental overwriting.}}
+
+% ---- bank menu + transfer ---------------------------------------------------------
+\posterbox[title=BANK MENU \& TRANSFER]{name=bank, column=8, span=5, row=5, rowspan=3}
+  {\Lf\Rt\ move between: bank select \textbar\ bank name
+        \textbar\ data transfer\\[2pt]
+   \hd{Select bank:} \btn{B}\plus\DP\ choose \textperiodcentered{}
+        \btn{A}\plus\btn{B}\plus\U\ copy bank \textperiodcentered{}
+        \btn{A}\plus\btn{B}\plus\D\ paste bank\\
+   \hd{Bank name:} \btn{B}\plus\U\D\ edit letter\\
+   \hd{Transfer:} \btn{B}\plus\btn{A}\plus\U\ send bank \textperiodcentered{}
+        \btn{B}\plus\U\D\ receive bank
+   \note{Link transfer: connect both units (not a GBA multiplayer
+         cable). Receiver presses \btn{A}\plus\btn{B}\plus\D,
+         sender \btn{A}\plus\btn{B}\plus\U. On error, differing
+         checksums are shown: \btn{SELECT} cancels,
+         \btn{A}\plus\btn{B} keeps the received data.}}
+\end{tcbposter}
+
+\end{document}
