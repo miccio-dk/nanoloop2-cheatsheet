@@ -5,6 +5,11 @@ cartridge and the Analogue Pocket built-in version), condensed from the
 official nanoloop 2.8 manual. A4 landscape, built with LaTeX +
 [tcolorbox](https://ctan.org/pkg/tcolorbox) (`tcbposter`).
 
+Each mode/view has its own colour (ColorBrewer Set1), used consistently
+in the page-1 workflow chart and in every box's frame and title bar.
+Key mappings are set as dot leaders: keys flush left, action flush
+right.
+
 ![Page 1: sequencer, menu 1, channels, and the five step parameters](preview-page-1.png)
 ![Page 2: menu 2, song editor, sync, file and bank menus](preview-page-2.png)
 
@@ -50,7 +55,9 @@ nanoloop 2.8 manual by Oliver Wittchow:
 
 The parameter and menu icons in `icons/` are the original pixel art
 from that manual, upscaled with nearest-neighbour scaling (white made
-transparent for the box titles). They remain © Oliver Wittchow and are
+transparent for the box titles). The same folder holds the manual's UI
+screenshots (sequencer, file menu, song editor, bank header) shown
+inside the workflow chart. They remain © Oliver Wittchow and are
 reproduced here for reference.
 
 nanoloop is a product of Oliver Wittchow (nanoloop.com). This cheatsheet
