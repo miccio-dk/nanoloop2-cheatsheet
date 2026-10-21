@@ -10,23 +10,25 @@ official nanoloop 2.8 manual. A4 landscape, built with LaTeX +
 
 ## What's covered
 
-**Page 1 — playing & editing**
+**Page 1 — overview & playing**
 
+- Workflow flowchart: how to move between sequencer, menu 1, menu 2,
+  file menu, song editor and bank menu
 - The sequencer: placing/cutting notes, editing, meta steps
-- Menu 1: channel & parameter selection, edit-all, mute, randomise,
-  note/bar view, legacy mode
 - The four channels (R, L, S, N) and startup colour schemes
-- All five per-step parameters: volume/envelope, pitch/chord,
-  pitch bend/LFO, waveform, pan/delay
+- Sync: S8/S16/S24/SY1 analog clock, MIDI clock via link port, CV sync,
+  start modes
 
-**Page 2 — structure & storage**
+**Page 2 — the two menus, split in halves**
 
-- Menu 2: pattern length, shift, copy/paste, ping-pong, tempo,
-  transport, per-channel 1/x tempo
-- Song editor, incl. pattern-sync vs. manual/external start modes
-- Sync: S8/S16/S24/SY1 analog clock, MIDI clock via link port, CV sync
-- File menu: save/load patterns and columns, delete, solo/mute, lock
-- Bank menu: select/copy/paste banks, bank names, link-cable transfer
+Left half — menu 1 and the five per-step parameters, each titled with
+its original on-device icon: volume/envelope, pitch/chord, bend/LFO,
+waveform, pan/delay.
+
+Right half — menu 2 and its entries, also with their original icons:
+file menu (save/load patterns and columns, delete, solo/mute, lock,
+bank menu & link transfer), song editor, ping-pong, pattern
+length/shift/copy, tempo & playback.
 
 ## Build
 
@@ -45,6 +47,11 @@ make clean      # removes auxiliary files
 Unofficial fan-made summary. All content is condensed from the official
 nanoloop 2.8 manual by Oliver Wittchow:
 <https://nanoloop.com/two/nanoloop28.html>
+
+The parameter and menu icons in `icons/` are the original pixel art
+from that manual, upscaled with nearest-neighbour scaling (white made
+transparent for the box titles). They remain © Oliver Wittchow and are
+reproduced here for reference.
 
 nanoloop is a product of Oliver Wittchow (nanoloop.com). This cheatsheet
 is not affiliated with or endorsed by him. In case of doubt, the
