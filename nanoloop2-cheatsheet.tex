@@ -3,7 +3,7 @@
 % Icons and screen images are the original pixel art from that manual
 % (C) Oliver Wittchow, upscaled with nearest-neighbour.
 % Colours: ColorBrewer Set1, one per mode/view, used consistently in
-% the workflow chart (page 1) and the box title bars on both pages.
+% the workflow chart (page 1) and the box frames / title bars.
 % Two A4 landscape pages, built with tcolorbox's tcbposter library.
 % Build:  make        (or: latexmk -pdf nanoloop2-cheatsheet.tex)
 \documentclass[11pt,a4paper,landscape]{article}
@@ -30,9 +30,9 @@
 \definecolor{s1green}{HTML}{4DAF4A}  % menu 2 + its functions
 \definecolor{s1purple}{HTML}{984EA3} % file menu
 \definecolor{s1orange}{HTML}{FF7F00} % song editor
-\definecolor{s1yellow}{HTML}{FFFF33} % sync
+\definecolor{s1yellow}{HTML}{FFFF33} % (unused since v4)
 \definecolor{s1brown}{HTML}{A65628}  % bank menu
-\definecolor{s1grey}{HTML}{999999}   % channels
+\definecolor{s1grey}{HTML}{999999}   % workflow, channels, sync
 
 % --- notation ----------------------------------------------------------------
 % D-pad triangles: \U \D \Lf \Rt ; buttons: \btn{A} ; combos: A + UP etc.
@@ -40,15 +40,18 @@
 \newcommand{\D}{\ensuremath{\blacktriangledown}}
 \newcommand{\Lf}{\ensuremath{\blacktriangleleft}}
 \newcommand{\Rt}{\ensuremath{\blacktriangleright}}
-\newcommand{\UD}{\U\kern-0.5pt\D}
-\newcommand{\LR}{\Lf\kern-0.5pt\Rt}
-\newcommand{\DP}{\U\D\Lf\Rt}
+\newcommand{\UD}{\U\kern-1.6pt\D}
+\newcommand{\LR}{\Lf\kern-1.6pt\Rt}
+\newcommand{\DP}{\UD\kern-1.2pt\LR}
 \newcommand{\btn}[1]{{\setlength{\fboxsep}{1.1pt}%
   \fbox{\sffamily\bfseries\fontsize{8.5}{9.5}\selectfont #1}}}
 \newcommand{\plus}{\,{+}\,}
 \newcommand{\hd}[1]{{\sffamily\bfseries #1}} % subheading inside a box
+\newcommand{\chn}[1]{{\ttfamily\bfseries #1}} % channel letter (device style)
 % key mapping line: keys flush left, dots, action flush right
 \newcommand{\km}[2]{\noindent\hbox to \linewidth{#1\ \dotfill\ #2}\par}
+% two-column split for mapping lists, thin grey rule between the columns
+\newcommand{\colsplit}{\hfill{\color{nlgrey}\vrule width 0.4pt}\hfill}
 % icon for posterbox titles (original nanoloop pixel art)
 \newcommand{\ticon}[1]{\includegraphics[height=3.3mm]{icons/#1.png}\hspace{1.4mm}}
 % menu icon strip shown inside the menu boxes
@@ -57,11 +60,12 @@
 % --- poster box styles ---------------------------------------------------------
 \tcbset{
   nlbox/.style={
-    enhanced, breakable=false, sharp corners=downhill, arc=1.2mm,
+    enhanced, breakable=false, arc=1.5mm,
     colback=white, colframe=nldark, coltitle=white,
     fonttitle=\sffamily\bfseries\small,
-    colbacktitle=nlpink, boxed title style={sharp corners, boxrule=0pt},
-    boxrule=0.7pt, left=1.8mm, right=1.8mm, top=1.4mm, bottom=1.4mm,
+    colbacktitle=nlpink, boxed title style={boxrule=0pt, arc=1.5mm},
+    boxrule=0.7pt, bottomrule=1.9pt,
+    left=1.5mm, right=1.5mm, top=1.4mm, bottom=1.4mm,
     fontupper=\sffamily\small, before upper={\raggedright},
   },
   % per-mode colour key: frame + title bar in the mode's Set1 colour
@@ -70,15 +74,14 @@
   cm2/.style  ={colframe=s1green,  colbacktitle=s1green},
   cfile/.style={colframe=s1purple, colbacktitle=s1purple},
   csong/.style={colframe=s1orange, colbacktitle=s1orange},
-  cchan/.style={colframe=s1grey,   colbacktitle=s1grey},
-  csync/.style={colframe=s1yellow, colbacktitle=s1yellow, coltitle=nldark},
+  cgrey/.style={colframe=s1grey,   colbacktitle=s1grey},
 }
-\newcommand{\note}[1]{\par\vspace{2pt}{\color{nlgrey}\itshape #1}}
+\newcommand{\note}[1]{\par\vspace{2pt}{\color{nlgrey}\itshape\footnotesize #1}}
 
 % --- workflow diagram styles ---------------------------------------------------
 \tikzset{
   state/.style={rectangle, rounded corners=2mm, fill=white, text=nldark,
-    line width=1.6pt, font=\sffamily\bfseries\small, align=center,
+    line width=2.4pt, font=\sffamily\bfseries\small, align=center,
     inner sep=5pt, minimum width=42mm},
   elab/.style={font=\scriptsize\sffamily, text=nldark, fill=white,
     inner sep=1.2pt},
@@ -89,11 +92,12 @@
 
 % ============================ PAGE 1 ======================================
 \begin{tcbposter}[
-  poster = {columns=12, rows=7, spacing=1.6mm, width=\textwidth, height=\textheight},
+  poster = {columns=12, rows=7, rowspacing=1.6mm, colspacing=2.4mm,
+            width=\textwidth, height=\textheight},
   boxes  = {nlbox},
 ]
 % ---- header -------------------------------------------------------------------
-\posterbox[colback=nldark, colframe=nldark,
+\posterbox[colback=nldark, colframe=nldark, bottomrule=0.7pt,
   fontupper={\color{white}\sffamily\small}]
   {name=hdr, column=1, span=12, row=1, rowspan=1}
   {{\bfseries\LARGE nanoloop 2 \textperiodcentered{} cheatsheet}\hfill
@@ -104,53 +108,55 @@
     Channel is shown top-left, edit parameter top-right.}
 
 % ---- workflow -------------------------------------------------------------------
-\posterbox[title=WORKFLOW -- modes \& how to move between them]
+\posterbox[title=WORKFLOW -- modes \& how to move between them, cgrey]
   {name=flow, column=1, span=12, row=2, rowspan=3}
   {\centering
    \resizebox{\linewidth}{!}{%
    \begin{tikzpicture}
-     \node[state, draw=s1red] (seq)  at (0,2.3)    {SEQUENCER\\[-0.5mm]
+     \node[state, draw=s1red] (seq)  at (0,2.3)    {\textcolor{s1red}{SEQUENCER}\\[-0.5mm]
        {\footnotesize\mdseries play \& edit steps}\\[1.2mm]
        \includegraphics[width=26mm]{icons/seq.png}};
-     \node[state, draw=s1blue] (m1)   at (12,2.3)  {MENU 1\\[-0.5mm]
+     \node[state, draw=s1blue] (m1)   at (12,2.3)  {\textcolor{s1blue}{MENU 1}\\[-0.5mm]
        {\footnotesize\mdseries channel \& parameter}\\[1.2mm]
        \includegraphics[width=32mm]{icons/menu1.png}};
-     \node[state, draw=s1green] (m2)   at (24,2.3) {MENU 2\\[-0.5mm]
+     \node[state, draw=s1green] (m2)   at (24,2.3) {\textcolor{s1green}{MENU 2}\\[-0.5mm]
        {\footnotesize\mdseries sub-menus \& pattern tools}\\[1.2mm]
        \includegraphics[width=32mm]{icons/menu2.png}};
-     \node[state, draw=s1brown] (bank) at (0,-2.3)   {BANK MENU\\[-0.5mm]
+     \node[state, draw=s1brown] (bank) at (0,-2.3)   {\textcolor{s1brown}{BANK MENU}\\[-0.5mm]
        {\footnotesize\mdseries 128 banks \& link transfer}\\[1.2mm]
        \includegraphics[width=32mm]{icons/bank.png}};
-     \node[state, draw=s1purple] (file) at (12,-2.3) {FILE MENU\\[-0.5mm]
+     \node[state, draw=s1purple] (file) at (12,-2.3) {\textcolor{s1purple}{FILE MENU}\\[-0.5mm]
        {\footnotesize\mdseries save \& load patterns}\\[1.2mm]
        \includegraphics[width=27mm]{icons/files.png}};
-     \node[state, draw=s1orange] (song) at (24,-2.3){SONG EDITOR\\[-0.5mm]
+     \node[state, draw=s1orange] (song) at (24,-2.3){\textcolor{s1orange}{SONG EDITOR}\\[-0.5mm]
        {\footnotesize\mdseries arrange patterns to a song}\\[1.2mm]
        \includegraphics[width=26mm]{icons/songs.png}};
      % sequencer <-> menu 1
-     \draw[sarr] ([yshift=2.2mm]seq.east) -- ([yshift=2.2mm]m1.west)
-       node[midway, above, elab] {SELECT};
-     \draw[sarr] ([yshift=-2.2mm]m1.west) -- ([yshift=-2.2mm]seq.east)
-       node[midway, below, elab] {B};
+     \draw[sarr] (seq.east) to[bend left=12] (m1.west);
+     \node[elab] at (6,3.4) {SELECT};
+     \draw[sarr] (m1.west) to[bend left=12] (seq.east);
+     \node[elab] at (6,1.2) {B};
      % menu 1 <-> menu 2
-     \draw[sarr] ([yshift=2.2mm]m1.east) -- ([yshift=2.2mm]m2.west)
-       node[midway, above, elab] {SELECT};
-     \draw[sarr] ([yshift=-2.2mm]m2.west) -- ([yshift=-2.2mm]m1.east)
-       node[midway, below, elab] {SELECT};
+     \draw[sarr] (m1.east) to[bend left=12] (m2.west);
+     \node[elab] at (18,3.4) {SELECT};
+     \draw[sarr] (m2.west) to[bend left=12] (m1.east);
+     \node[elab] at (18,1.2) {SELECT};
      % menu 2 -> file menu (diagonal), file menu -> menu 1 (vertical)
-     \draw[sarr] (m2.south west) -- (file.north east)
-       node[midway, above right, elab] {B};
-     \draw[sarr] (file.north) -- (m1.south)
-       node[midway, left, elab] {SELECT};
+     \draw[sarr] (m2.south west) to[bend left=10] (file.north east);
+     \node[elab] at (19.4,0.9)
+       {\btn{B}\ \includegraphics[height=2.8mm]{icons/file.png}};
+     \draw[sarr] (file.north) to[bend left=10] (m1.south);
+     \node[elab] at (10.7,0) {SELECT};
      % file menu <-> bank menu
-     \draw[sarr] ([yshift=2.2mm]file.west) -- ([yshift=2.2mm]bank.east)
-       node[midway, above, elab] {START};
-     \draw[sarr] ([yshift=-2.2mm]bank.east) -- ([yshift=-2.2mm]file.west);
+     \draw[sarr] (file.west) to[bend left=12] (bank.east);
+     \node[elab] at (6,-1.1) {START};
+     \draw[sarr] (bank.east) to[bend left=12] (file.west);
      % menu 2 <-> song editor
-     \draw[sarr] ([xshift=2.2mm]m2.south) -- ([xshift=2.2mm]song.north)
-       node[midway, right, elab] {B or A};
-     \draw[sarr] ([xshift=-2.2mm]song.north) -- ([xshift=-2.2mm]m2.south)
-       node[midway, left, elab] {SELECT};
+     \draw[sarr] (m2.south) to[bend left=12] (song.north);
+     \node[elab] at (26.1,0)
+       {\btn{B} or \btn{A}\ \includegraphics[height=2.8mm]{icons/song.png}};
+     \draw[sarr] (song.north) to[bend left=12] (m2.south);
+     \node[elab] at (21.9,0) {SELECT};
    \end{tikzpicture}}\par}
 
 % ---- sequencer -------------------------------------------------------------------
@@ -162,21 +168,19 @@
    \km{\btn{B}\plus\DP}{edit note (current parameter)}
    \km{\btn{A}\plus\DP}{edit extra parameters}
    \km{\btn{START}}{mono / chord mode (pitch param)}
-   \km{\btn{R}\plus\Lf/\Rt}{meta step}
+   \km{\btn{R}\plus\LR}{meta step}
    \km{\btn{SELECT}}{menu 1}
-   \vspace{11mm}
-   \note{Default parameter is pitch: \btn{B}\plus\U\D\ semitone,
-         \btn{B}\plus\Lf\Rt\ octave.}
+   \note{Default parameter is pitch: \btn{B}\plus\UD\ semitone,
+         \btn{B}\plus\LR\ octave.}
    \note{\hd{Meta step:} \btn{R}\plus\Lf/\Rt/\D\ makes a step play only
          every 2nd or 4th pattern round.}}
 
 % ---- channels ----------------------------------------------------------------------
-\posterbox[title=CHANNELS, cchan]{name=ch, column=6, span=3, row=5, rowspan=3}
-  {\btn{R} mono PWM/FM, arp chords, pitch env/LFO\\
-   \btn{L} mono PWM/FM, same as R\\
-   \btn{S} poly PWM/FM: real chords, stereo phasing, filter/mod env\\
-   \btn{N} noise: filter + speed, arp on speed
-   \vspace{4mm}
+\posterbox[title=CHANNELS, cgrey]{name=ch, column=6, span=3, row=5, rowspan=3}
+  {\chn{r} mono PWM/FM, arp chords, pitch env/LFO\\
+   \chn{l} mono PWM/FM, same as R\\
+   \chn{s} poly PWM/FM: real chords, stereo phasing, filter/mod env\\
+   \chn{n} noise: filter + speed, arp on speed
    \note{R/L/S: filtered pulse wave (variable width) or FM
          (mod amount + mod freq).}
    \note{\hd{Startup:} at the logo, pick colours --
@@ -184,165 +188,172 @@
          \U\ grey/white.}}
 
 % ---- sync ----------------------------------------------------------------------------
-\posterbox[title=SYNC, csync]{name=sync, column=9, span=4, row=5, rowspan=3}
+\posterbox[title=SYNC, cgrey]{name=sync, column=9, span=4, row=5, rowspan=3}
   {\hd{S8} click every 2nd step (default; PO, Volca\ldots)\\
    \hd{S16} 1 click per step\\
    \hd{S24} 3 clicks/step -- for MIDI adaptor\\
-   \hd{SY1} clicks on left audio ch. (PO slave; not on GBA)
-   \note{Mode is set in menu 2: \btn{A}\plus\U\D. MIDI clock goes out
-         via the link port (Pocket-to-MIDI cable).}
-   \note{\hd{CV sync:} in slave mode press \btn{B}\plus\btn{SELECT} --
-         ``c'' under the tempo; 1 pulse per step.}
-   \note{\hd{S16 auto-revert:} no clock for \textasciitilde2 s
-         $\rightarrow$ back to step 1.}
-   \note{\hd{Start modes:} \btn{B} = pattern-sync (song follows the
-         running loop). \btn{A} = manual/external: \btn{START} starts
-         at once and sends sync, \btn{B}\plus\btn{A} = slave.}}
+   \hd{SY1} clicks on left audio ch. (PO slave; not on GBA)\\[2pt]
+   \km{\btn{A}\plus\UD}{set sync mode (in menu 2)}
+   \km{\btn{B}\plus\btn{SELECT}}{CV sync (slave mode)}
+   \km{\btn{B}}{start: pattern-sync}
+   \km{\btn{A}}{start: manual / external}
+   \note{CV sync: ``c'' under the tempo, 1 pulse per step.
+         MIDI clock goes out via the link port (Pocket-to-MIDI cable).}
+   \note{\hd{Manual start:} \btn{START} begins at once and sends sync;
+         \btn{B}\plus\btn{A} = slave. \hd{S16 auto-revert:} no clock
+         for \textasciitilde2 s $\rightarrow$ back to step 1.}}
 \end{tcbposter}
 
 \clearpage
 
 % ============================ PAGE 2 ======================================
 \begin{tcbposter}[
-  poster = {columns=12, rows=12, spacing=1.6mm, width=\textwidth, height=\textheight},
+  poster = {columns=12, rows=12, rowspacing=1.6mm, colspacing=2.4mm,
+            width=\textwidth, height=\textheight},
   boxes  = {nlbox},
 ]
 % =========================== LEFT: menu 1 + params ============================
 \posterbox[title=MENU 1 -- channel \& parameter, cm1]{name=m1, column=1, span=6, row=1, rowspan=3}
-  {\strip{menu1}{44mm}
-   \Lf\Rt\ select edit parameter \textperiodcentered{}
-   \U\D\ select channel \textperiodcentered{}
-   \btn{B}\ back to sequencer\\
-   \km{\btn{B}/\btn{A}\plus\DP , \btn{START}}{edit \emph{all} notes at once}
-   \km{\btn{A}\plus\btn{START}}{mute / unmute channel}
-   \btn{R}\plus\btn{START}\ note value / bar view \textperiodcentered{}
-   \btn{R}\plus\DP\ randomise (repeat = wider range)\\
-   \km{\btn{R}\plus\btn{SELECT}}{new / legacy mode (n\,/\,L, saved)}
-   \km{\btn{SELECT}}{menu 2}}
+  {\strip{menu1}{38mm}
+   \km{\btn{B}/\btn{A}/\btn{START}\plus\DP}{edit \emph{all} notes at once}
+   \noindent\begin{minipage}[t]{0.47\linewidth}
+     \km{\LR}{select parameter}
+     \km{\UD}{select channel}
+     \km{\btn{A}\plus\btn{START}}{mute / unmute ch.}
+     \km{\btn{R}\plus\btn{START}}{value / bar view}
+   \end{minipage}\colsplit\begin{minipage}[t]{0.47\linewidth}
+     \km{\btn{B}}{back to sequencer}
+     \km{\btn{R}\plus\DP}{randomise}
+     \km{\btn{R}\plus\btn{SELECT}}{new / legacy mode}
+     \km{\btn{SELECT}}{menu 2}
+   \end{minipage}
+   \note{Randomise: repeat presses widen the range.
+         Legacy mode: \btn{A}\plus D-pad edits only (pre-2.8 style).}}
 
 \posterbox[title={\ticon{pitch}PITCH / CHORD}, cm1]{name=p2, column=1, span=6, row=4, rowspan=3}
-  {\btn{B}\plus\U\D\ semitone \textperiodcentered{}
-   \btn{B}\plus\Lf\Rt\ octave \textperiodcentered{}
-   \btn{START}\ chord mode on/off\\
-   \btn{B}\plus\btn{START}\ chord: relative (note + intervals)
-        / absolute (4 notes)\\
-   \btn{A}\plus\U\D\ chord interval \textperiodcentered{}
-   \btn{A}\plus\Lf\Rt\ select chord step (top note = pause)
-        \textperiodcentered{} \btn{L}\ arpeggio envelope on/off
-   \vspace{7mm}
+  {\noindent\begin{minipage}[t]{0.47\linewidth}
+     \km{\btn{B}\plus\UD}{semitone}
+     \km{\btn{B}\plus\LR}{octave}
+     \km{\btn{START}}{chord mode on/off}
+     \km{\btn{B}\plus\btn{START}}{rel. / abs. chord}
+   \end{minipage}\colsplit\begin{minipage}[t]{0.47\linewidth}
+     \km{\btn{A}\plus\UD}{chord interval}
+     \km{\btn{A}\plus\LR}{select chord step}
+     \km{\btn{L}}{arpeggio env. on/off}
+   \end{minipage}
    \note{Chords: arpeggio on R/L, polyphonic on S. N has no pitch --
-         always arpeggio (on playback frequency).}}
+         always arpeggio (on playback frequency).
+         Chord step: top note = pause.}}
 
 \posterbox[title={\ticon{env}VOLUME / ENVELOPE}, cm1]{name=p1, column=1, span=3, row=7, rowspan=3}
-  {\km{\btn{B}\plus\U\D}{volume}
-   \km{\btn{B}\plus\Lf\Rt}{length}
-   \km{\btn{A}\plus\U\D}{envelope: D / AD / gate}
-   \km{\btn{A}\plus\Lf\Rt}{click / soft attack}
+  {\km{\btn{B}\plus\UD}{volume}
+   \km{\btn{B}\plus\LR}{length}
+   \km{\btn{A}\plus\UD}{envelope: D / AD / gate}
+   \km{\btn{A}\plus\LR}{click (R) / soft (L,S,N)}
    \note{D = decay only. AD = attack = decay. Gate = full level for
-         the set length. Far right = infinite envelope. Click on R,
-         soft attack on L, S, N.}}
+         the set length. Far right = infinite envelope.}}
 
 \posterbox[title={\ticon{bend}BEND / LFO}, cm1]{name=p3, column=4, span=3, row=7, rowspan=3}
-  {\km{\btn{B}\plus\U\D}{amplitude}
-   \km{\btn{B}\plus\Lf\Rt}{length / frequency}
-   \km{\btn{A}\plus\U\D}{envelope / LFO}
-   \km{\btn{A}\plus\Lf\Rt}{S only: pitch / filter}
-   \vspace{3mm}
+  {\km{\btn{B}\plus\UD}{amplitude}
+   \km{\btn{B}\plus\LR}{length / frequency}
+   \km{\btn{A}\plus\UD}{envelope / LFO}
+   \km{\btn{A}\plus\LR}{S only: pitch / filter}
    \note{Acts on pitch (R,L,S) and filter cutoff / FM mod depth (S,N).
          Lower half = retriggered, upper = free-running.}}
 
 \posterbox[title={\ticon{pw}WAVEFORM}, cm1]{name=p4, column=1, span=3, row=10, rowspan=3}
-  {\km{\btn{B}\plus\U\D}{cutoff / FM modulation}
-   \km{\btn{B}\plus\Lf\Rt}{pulse width / mod freq}
+  {\km{\btn{B}\plus\UD}{cutoff / FM modulation}
+   \km{\btn{B}\plus\LR}{pulse width / mod freq}
    \km{\btn{A}\plus\U}{FM (R,L,S) / GB noise (N)}
    \km{\btn{A}\plus\D}{PWM / highpass noise (N)}
    \km{\btn{A}\plus\Rt}{bandpass / metallic noise}
    \km{\btn{A}\plus\Lf}{highpass / white noise}
-   \note{On N: \btn{B}\plus\Lf\Rt\ = noise speed;
+   \note{On N: \btn{B}\plus\LR\ = noise speed;
          \btn{L} toggles GB noise 16/8-bit.}}
 
 \posterbox[title={\ticon{pan}PAN / DELAY}, cm1]{name=p5, column=4, span=3, row=10, rowspan=3}
-  {\km{\btn{B}\plus\Lf\Rt}{panning (S and N only)}
-   \km{\btn{B}\plus\U\D}{delay / delay + original}
-   \vspace{15mm}
+  {\km{\btn{B}\plus\LR}{panning (S and N only)}
+   \km{\btn{B}\plus\UD}{delay / delay + orig.}
    \note{Editing delay for all notes from menu 1 hits only
          even steps -- that is the swing control.}}
 
 % =========================== RIGHT: menu 2 + entries ==========================
 \posterbox[title=MENU 2 -- sub-menus \& pattern tools, cm2]{name=m2, column=7, span=6, row=1, rowspan=2}
-  {\strip{menu2}{60mm}
+  {\strip{menu2}{56mm}
    \btn{B}\ (or \btn{A}) opens the selected sub-menu / function below\\
-   \btn{SELECT}\ back to menu 1 \textperiodcentered{}
-   \btn{A}\plus\U\D\ sync mode (S8 / S16 / S24 / SY1 -- page 1)\\
-   Icon row above, in order: file, song, ping-pong, shift, tempo.}
+   \km{\btn{SELECT}}{back to menu 1}
+   \km{\btn{A}\plus\UD}{sync mode (page 1)}}
 
 \posterbox[title={\ticon{file}FILE MENU}, cfile]{name=file, column=7, span=6, row=3, rowspan=5}
   {128 banks \texttimes\ 15 slots per channel. Slot 0 is read-only
    (loads an empty pattern). The bank also carries the waveforms --
    switching banks can change the sound at once.\\[2pt]
-   \U\D\ select channel \textperiodcentered{}
-   \Lf\Rt\ select slot \textperiodcentered{}
+   \UD\ select channel \textperiodcentered{}
+   \LR\ select slot \textperiodcentered{}
    \btn{START}\ bank menu \textperiodcentered{}
    \btn{SELECT}\ back to menu 1\\[2pt]
-   \begin{tabular}{@{}ll@{\hspace{5mm}}ll@{}}
+   \begin{tabular}{@{}ll@{\hspace{4mm}}ll@{}}
      \btn{B}\plus\D & save pattern to slot &
      \btn{B}\plus\U & load pattern from slot\\
      \btn{A}\plus\D & save all 4 (column) &
      \btn{A}\plus\U & load column\\
-     \btn{B}\plus\Lf\Rt & next slot + load &
-     \btn{A}\plus\Lf\Rt & next column + load all\\
+     \btn{B}\plus\LR & next slot + load &
+     \btn{A}\plus\LR & next column + load all\\
      \btn{B}\plus\btn{R}\plus\U & load pattern with tempo &
      \btn{A}\plus\btn{B}\plus\U & load column on 1st step\\
      \btn{A}\plus\btn{B}\plus\D & delete slot &
-     \btn{A}\plus\btn{B}\plus\Lf\Rt & mute / unmute / solo\\
+     \btn{A}\plus\btn{B}\plus\LR & mute / unmute / solo\\
    \end{tabular}\\[2pt]
    \hd{Lock:} \btn{L}\plus\btn{R} locks saving (``X'' shown),
         against accidental overwriting.\\
    \hd{Bank menu:} \btn{A}\plus\btn{B}\plus\U\ copy bank
         \textperiodcentered{} \btn{A}\plus\btn{B}\plus\D\ paste bank
-        \textperiodcentered{} \btn{B}\plus\U\D\ edit bank name\\
+        \textperiodcentered{} \btn{B}\plus\UD\ edit bank name\\
    \hd{Transfer:} \btn{A}\plus\btn{B}\plus\U\ send bank
         \textperiodcentered{} \btn{A}\plus\btn{B}\plus\D\ receive bank
         \textperiodcentered{} on error: \btn{SELECT} cancels,
         \btn{A}\plus\btn{B} keeps the data.}
 
 \posterbox[title={\ticon{song}SONG EDITOR}, csong]{name=song, column=7, span=6, row=8, rowspan=3}
-  {\btn{B}\plus\U\D\ select pattern \textperiodcentered{}
-   \btn{B}\plus\Lf\Rt\ copy value to next step\\
-   \btn{A}\plus\U\ load patterns at cursor \textperiodcentered{}
-   \btn{A}\plus\Lf\Rt\ turn page (15 pages)\\
-   \btn{R}\ channel follows tempo \textperiodcentered{}
-   \btn{L}\ channel follows pattern length\\
-   \btn{START}\ start song at cursor \textperiodcentered{}
-   \btn{SELECT}\ back to menu 2
-   \vspace{2mm}
+  {\noindent\begin{minipage}[t]{0.47\linewidth}
+     \km{\btn{B}\plus\UD}{select pattern}
+     \km{\btn{B}\plus\LR}{copy value to next}
+     \km{\btn{A}\plus\U}{load patterns @ cursor}
+     \km{\btn{A}\plus\LR}{turn page (15 pages)}
+   \end{minipage}\colsplit\begin{minipage}[t]{0.47\linewidth}
+     \km{\btn{R}}{channel follows tempo}
+     \km{\btn{L}}{channel follows length}
+     \km{\btn{START}}{start song at cursor}
+     \km{\btn{SELECT}}{back to menu 2}
+   \end{minipage}
    \note{Song is saved when you \emph{leave} the editor -- not if you
          power off inside it. Tempo is stored with each pattern.}}
 
 \posterbox[title={\ticon{pingpong}PING-PONG}, cm2,
-  fontupper=\sffamily\footnotesize]
+  fontupper=\sffamily\fontsize{8pt}{9.5pt}\selectfont, top=1.1mm, bottom=1.1mm]
   {name=pp, column=7, span=2, row=11, rowspan=2}
   {\km{\btn{B}\plus\Lf}{on}
    \km{\btn{START}}{random}
    \km{\btn{B}\plus\Rt}{normal (off)}}
 
 \posterbox[title={\ticon{shift}SHIFT}, cm2,
-  fontupper=\sffamily\footnotesize]
+  fontupper=\sffamily\fontsize{8pt}{9.5pt}\selectfont, top=1.1mm, bottom=1.1mm]
   {name=sh, column=9, span=2, row=11, rowspan=2}
-  {\km{\btn{B}\plus\U\D}{length}
-   \km{\btn{B}\plus\Lf\Rt}{shift}
-   \km{\btn{A}\plus\Lf\Rt}{shift+delay}
-   \btn{START}\ copy pattern \textperiodcentered{}
-   \btn{A}\plus\btn{B}\ paste}
+  {\km{\btn{B}\plus\UD}{length}
+   \km{\btn{B}\plus\LR}{shift}
+   \km{\btn{A}\plus\LR}{shift+delay}
+   \km{\btn{START}}{copy pattern}
+   \km{\btn{A}\plus\btn{B}}{paste}}
 
 \posterbox[title={\ticon{tempo}TEMPO}, cm2,
-  fontupper=\sffamily\footnotesize]
+  fontupper=\sffamily\fontsize{8pt}{9.5pt}\selectfont, top=1.1mm, bottom=1.1mm]
   {name=tp, column=11, span=2, row=11, rowspan=2}
-  {\km{\btn{B}\plus\Lf\Rt}{tempo}
-   \km{\btn{B}\plus\U\D}{1/x tempo (ch.)}
+  {\km{\btn{B}\plus\LR}{tempo}
+   \km{\btn{B}\plus\UD}{1/x tempo}
    \km{\btn{START}}{start / master}
    \km{\btn{A}\plus\btn{B}}{stop / slave}
-   \btn{A}\ pause / step \textperiodcentered{} \btn{B}\ resume}
+   \km{\btn{A}}{pause / step}
+   \km{\btn{B}}{resume}}
 \end{tcbposter}
 
 \end{document}

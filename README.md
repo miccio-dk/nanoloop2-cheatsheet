@@ -6,9 +6,11 @@ official nanoloop 2.8 manual. A4 landscape, built with LaTeX +
 [tcolorbox](https://ctan.org/pkg/tcolorbox) (`tcbposter`).
 
 Each mode/view has its own colour (ColorBrewer Set1), used consistently
-in the page-1 workflow chart and in every box's frame and title bar.
+in the page-1 workflow chart and in every box's frame and title bar;
+the workflow box itself, channels and sync are grey.
 Key mappings are set as dot leaders: keys flush left, action flush
-right.
+right — dense lists (menu 1, pitch/chord, song editor) in two columns
+with a thin rule between them.
 
 ![Page 1: sequencer, menu 1, channels, and the five step parameters](preview-page-1.png)
 ![Page 2: menu 2, song editor, sync, file and bank menus](preview-page-2.png)
