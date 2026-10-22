@@ -23,20 +23,23 @@ lowercase bold monospace (r l s n), like the device displays them.
 - Workflow flowchart: how to move between sequencer, menu 1, menu 2,
   file menu, song editor and bank menu
 - The sequencer: placing/cutting notes, editing, meta steps
-- The four channels (R, L, S, N) and startup colour schemes
+- The four channels (r, l, s, n)
 - Sync: S8/S16/S24/SY1 analog clock, MIDI clock via link port, CV sync,
   start modes
+- A legend of the core terms: pattern, channel, step, slot, bank,
+  song, file
 
 **Page 2 — the two menus, split in halves**
 
 Left half — menu 1 and the five per-step parameters, each titled with
-its original on-device icon: volume/envelope, pitch/chord, bend/LFO,
-waveform, pan/delay.
+its original on-device icon and opened by a one-line description of
+the feature: volume/envelope, pitch/chord, bend/LFO, waveform,
+pan/delay.
 
-Right half — menu 2 and its entries, also with their original icons:
-file menu (save/load patterns and columns, delete, solo/mute, lock,
-bank menu & link transfer), song editor, ping-pong, pattern
-length/shift/copy, tempo & playback.
+Right half — menu 2 and its entries, in device order, also with their
+original icons: ping-pong, pattern length/shift/copy, tempo &
+playback, the song editor, and the file menu (save/load patterns and
+columns, delete, solo/mute, lock, bank menu & link transfer).
 
 ## Build
 
